@@ -13,6 +13,7 @@ sam package --template-file template.yaml --output-template-file serverless-outp
 aws cloudformation  deploy --template-file serverless-output.yaml --stack-name HTGI --region us-east-1 --profile [profile name] --parameter-overrides IamRoleArnParameter=arn:aws:iam::[AccountID]:role/htgi-api-gateway-role
 
 htgi-api-gateway-role
+```json
 {
     "Version": "2012-10-17",
     "Statement": {
@@ -24,7 +25,7 @@ htgi-api-gateway-role
         "Resource": "*"
     }
 }
-
+```
 ## Load data into DynamoDb table
 
 python human_trafficking_data_load.py --profile_name [AWS profile name] --region [AWS Region]
