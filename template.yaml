@@ -1,0 +1,95 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway integrated with DynamoDB
+Parameters:
+  IamRoleArnParameter:
+    Type: String
+Resources:
+  HTGIAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: stage
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          version: "1"
+          title: "HTGI"
+        basePath: "/stage"
+        schemes:
+        - "https"
+        paths:
+          /human-trafficking-indicator/country/{country}/good/{good}:
+            get:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              parameters:
+              - name: "country"
+                in: "path"
+                required: true
+                type: "string"
+              - name: "good"
+                in: "path"
+                required: true
+                type: "string"
+              responses:
+                '200':
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+              x-amazon-apigateway-integration:
+                credentials: !Ref IamRoleArnParameter
+                uri: "arn:aws:apigateway:us-east-1:dynamodb:action/Query"
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseTemplates:
+                      application/json: "#set($items = $input.json('$.Items'))\n#if( $items\
+                        \ == [])\n    #set($context.responseOverride.status = 404)\n#else\n\
+                        {\n        \"good\":$input.json('$.Items[0].good.S'),\n        \"\
+                        sector\":$input.json('$.Items[0].sector.S'),\n        \"child_labor\"\
+                        :$input.json('$.Items[0].child_labor.S'),\n        \"forced_child_labor\"\
+                        :$input.json('$.Items[0].forced_child_labor.S'),\n        \"forced_labor\"\
+                        :$input.json('$.Items[0].forced_labor.S'),\n        \"year\": $input.json('$.Items[0].report_year.S'),\n\
+                        \        \"advancement_level\": $input.json('$.Items[0].advancement_level.S'),\n\
+                        \        \"advancement_description\": $input.json('$.Items[0].advancement_description.S')\n\
+                        }\n#end\n"
+                requestTemplates:
+                  application/json: "{\n    \"TableName\": \"human_trafficking_indicator\"\
+                    ,\n    \"Limit\": 3,\n    \"ConsistentRead\": true,\n    \"ProjectionExpression\"\
+                    : \"good,sector,child_labor, forced_child_labor, forced_labor,report_year,advancement_level,advancement_description\"\
+                    ,\n    \"KeyConditionExpression\": \"country_code = :country AND begins_with(good,\
+                    \ :good)\",\n    \"ExpressionAttributeValues\": {\n        \":country\"\
+                    : {\"S\": \"$input.params('country')\"},\n        \":good\": {\"S\": \"\
+                    $input.params('good')\"}\n    },\n    \"ReturnConsumedCapacity\": \"TOTAL\"\
+                    \n}"
+                passthroughBehavior: "when_no_templates"
+                httpMethod: "POST"
+                type: "aws"
+        definitions:
+          Empty:
+            type: "object"
+            title: "Empty Schema"
+        Policies: DynamoDBReadPolicy
+  HTGITABLE:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "country_code"
+          AttributeType: "S"
+        - 
+          AttributeName: "good"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "country_code"
+          KeyType: "HASH"
+        - 
+          AttributeName: "good"
+          KeyType: "RANGE"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      TableName: "human_trafficking_indicator"
