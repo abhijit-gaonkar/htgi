@@ -40,7 +40,7 @@ Get the Country assessment summary description
 '''
 def get_assessment_data():
   global country_assessments, api_key_header
-  print(api_key_header)
+
   api_url = 'https://data.dol.gov/get/SweatToilAllAssessments/limit/200';
   response = requests.get(api_url, headers=api_key_header)
   country_assessments = json.loads(response.content.decode('utf-8'))
@@ -100,8 +100,8 @@ def get_country_code(country_name):
 load aggregated data into DynamoDB
 '''
 def load_dynamo_db_table(profile_name,region_name):
-  session = boto3.session.Session(profile_name)
-  dynamodb = session.resource('dynamodb', region_name)
+  session = boto3.session.Session(profile_name=profile_name)
+  dynamodb = session.resource('dynamodb', region_name=region_name)
 
   table = dynamodb.Table('human_trafficking_indicator')
 
