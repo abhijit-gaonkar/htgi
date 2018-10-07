@@ -1,7 +1,7 @@
 # HTGI
 Human Trafficking Goods Indicator API
 
-The purpose of this api is to determine if a good produced in a country is listed under Goods Produced by Child Labor or Forced Labor.
+The purpose of this api is to determine if a good produced in a country is listed under Goods Produced by Child Labor or Forced Labor,
 based on datasets provied by Department of Labor that contains information on child labor and forced labor worldwide from ILAB’s three flagship reports: https://www.dol.gov/agencies/ilab/reports/child-labor
 
 ## Infrastructure
