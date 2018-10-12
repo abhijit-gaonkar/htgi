@@ -35,7 +35,9 @@ To use the API you must register at https://devtools.dol.gov/developer and reque
 Registration and API keys are free.
 Once you have the API key, create an environment variable DOL_API_KEY with it's value.
 
+```
 python human_trafficking_data_load.py --profile_name [AWS profile name] --region [AWS Region]
+```
 
 ## The API
 
