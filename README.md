@@ -53,6 +53,7 @@ good - good name
 Example:
 GET /human-trafficking-indicator/country/IN/good/coffee
 
+```json
 {
   "good": "coffee",
   "sector": "Agriculture",
@@ -63,5 +64,6 @@ GET /human-trafficking-indicator/country/IN/good/coffee
   "advancement_level": "Significant Advancement",
   "advancement_description": "In 2017, India made a significant advancement in efforts to eliminate the worst forms of child labor. The government ratified both ILO Convention 182 and Convention 138 and amended the Child Labor Act to prohibit children under age 18 from working in hazardous occupations and processes. The government also launched the Platform for Effective Enforcement for No Child Labor to more effectively enforce child labor laws and implement the National Child Labor Program. In addition, the government released a new National Plan of Action for Children that implements the National Policy for Children, which includes a focus on child laborers, trafficked children, and other vulnerable children. However, children in India engage in the worst forms of child labor, including in forced labor producing garments and quarrying stones. Children also perform dangerous tasks producing bricks. The Child Labor Actâs hazardous work prohibitions do not include all occupations in which children work in unsafe and unhealthy environments for long periods of time. Penalties for employing children are insufficient to deter violations, and the recruitment of children by non-state armed groups is not criminally prohibited."
 }
+```
 
 404 - When there is no data for the country / good combination
