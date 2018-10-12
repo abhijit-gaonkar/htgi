@@ -28,6 +28,13 @@ htgi-api-gateway-role
 ```
 ## Load data into DynamoDb table
 
+This data load script  will populate data  available at https://developer.dol.gov/others/sweat-and-toil/ into a Dynamo DB table.
+The datasets contain information on child labor and forced labor worldwide from ILAB’s three flagship reports: 
+Findings on the Worst Forms of Child Labor; List of Goods Produced by Child Labor or Forced Labor ; 
+To use the API you must register at https://devtools.dol.gov/developer and request an API key for each application that will access the API. 
+Registration and API keys are free.
+Once you have the API key, create an environment variable DOL_API_KEY with it's value.
+
 python human_trafficking_data_load.py --profile_name [AWS profile name] --region [AWS Region]
 
 ## The API
